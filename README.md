@@ -160,3 +160,13 @@ Press Ctrl+C to break, then:
 (lldb) bt
 (lldb) copilot what is the call stack?
 ```
+
+## Author
+
+Elias Bachaalany ([@0xeb](https://github.com/0xeb))
+
+Pair-programmed with Claude Code and Codex.
+
+## License
+
+MIT
