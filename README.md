@@ -1,10 +1,11 @@
 # LLDB Copilot
 
+
 Copilot-powered debugging assistant for LLDB. Ask questions about your debug session and get intelligent analysis.
 
 ## Requirements
 
-- LLDB 16+ with development headers
+- LLDB development headers/libraries (auto-fetched on Windows by default)
 - CMake 3.20+
 - C++20 compiler
 - Claude Code or GitHub Copilot configured
@@ -22,10 +23,9 @@ xcode-select --install
 ```
 
 **Windows:**
-```powershell
-winget install LLVM.LLVM
-```
-Note: The winget package requires Python 3.10 at runtime (see [Windows Setup](#windows-setup) below).
+No manual LLVM install is required by default. CMake auto-fetches a pinned LLVM/LLDB SDK on first configure (`LLDB_PINNED_VERSION`, currently `18.1.8`).
+
+Optional manual setup still works via `winget install LLVM.LLVM` and `LLVM_DIR` if you want to bypass auto-fetch.
 
 ## Build
 
@@ -132,7 +132,27 @@ Settings are stored in `~/.lldb_copilot/settings.json`:
 
 ## Windows Setup
 
-The LLVM package from winget requires Python 3.10 to run LLDB. Download and extract to the project `bin` folder:
+### Default (recommended): CMake auto-fetch
+
+On Windows, if LLDB is not found locally, configure downloads a pinned LLVM/LLDB SDK automatically.
+
+You can control this behavior with:
+
+- `LLDB_AUTO_FETCH=ON|OFF` (default: `ON`)
+- `LLDB_PINNED_VERSION` (default: `18.1.8`)
+- `LLDB_WINDOWS_SDK_URL` (override download source)
+- `LLDB_WINDOWS_SDK_SHA256` (optional integrity pin)
+
+Example:
+
+```cmd
+cmake --preset windows -DLLDB_AUTO_FETCH=ON
+cmake --build --preset windows
+```
+
+### Optional manual setup (winget + embedded Python)
+
+The LLVM package from winget may require Python 3.10 to run LLDB. Download and extract to the project `bin` folder:
 
 ```powershell
 # Download and extract embedded Python 3.10 to project bin folder

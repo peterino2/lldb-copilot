@@ -168,7 +168,12 @@ bool EnsureAgent(AgentSession& session, LldbClient& dbg_client,
         if (!session.agent->initialize())
         {
             if (error)
-                *error = "Failed to initialize: " + session.agent->provider_name();
+            {
+                std::string detail = session.agent->get_last_error();
+                *error = "Failed to initialize " + session.agent->provider_name() + " provider";
+                if (!detail.empty())
+                    *error += ": " + detail;
+            }
             ResetAgentSession(session);
             return false;
         }
